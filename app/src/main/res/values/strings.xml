@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieDatabaseWithCoroutines</string>
+    <string name="label_release_date">Release On : %s</string>
 </resources>
