@@ -30,21 +30,15 @@ class MovieAdapter : PagedListAdapter<MovieListItemDto, MovieAdapter.MovieItemVi
         }
     }
 
-    private val mMovieLists by lazy { ArrayList<MovieListItemDto>() }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemViewHolder {
         return MovieItemViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.layout_movie_item, parent, false)
         )
     }
 
-    override fun getItemCount(): Int {
-        return mMovieLists.size
-    }
-
     override fun onBindViewHolder(holder: MovieItemViewHolder, position: Int) {
-        val movieItem = mMovieLists[position]
-        holder.bind(movieItem)
+        val movieItem = getItem(position)
+        holder.bind(movieItem!!)
     }
 
     inner class MovieItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

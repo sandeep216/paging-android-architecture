@@ -2,7 +2,9 @@ package com.example.moviedatabasewithcoroutines.feature.movie_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.example.moviedatabasewithcoroutines.base.Resource
+import com.example.moviedatabasewithcoroutines.feature.movie_list.data.dtos.MovieListItemDto
 import com.example.moviedatabasewithcoroutines.feature.movie_list.data.dtos.MovieResponseDtos
 import retrofit2.Response
 
@@ -12,8 +14,7 @@ import retrofit2.Response
 interface IMovieList {
 
     interface ViewModel {
-        fun fetchMovieList(page: Int)
-        fun getMovieListObserver(): MutableLiveData<Resource<MovieResponseDtos?>>
+        fun getMovieListObserver(): LiveData<PagedList<MovieListItemDto>>
     }
 
     interface Repository {

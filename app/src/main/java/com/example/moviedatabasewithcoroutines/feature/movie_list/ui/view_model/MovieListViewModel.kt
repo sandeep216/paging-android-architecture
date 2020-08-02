@@ -1,8 +1,14 @@
 package com.example.moviedatabasewithcoroutines.feature.movie_list.ui.view_model
 
 import androidx.lifecycle.*
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.moviedatabasewithcoroutines.base.Resource
 import com.example.moviedatabasewithcoroutines.feature.movie_list.IMovieList
+import com.example.moviedatabasewithcoroutines.feature.movie_list.data.data_source.DataSourceFactory
+import com.example.moviedatabasewithcoroutines.feature.movie_list.data.data_source.MovieItemDataSource
+import com.example.moviedatabasewithcoroutines.feature.movie_list.data.dtos.MovieListItemDto
 import com.example.moviedatabasewithcoroutines.feature.movie_list.data.dtos.MovieResponseDtos
 import com.example.moviedatabasewithcoroutines.feature.movie_list.data.repository.MovieListRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,17 +20,29 @@ import java.lang.Exception
  */
 class MovieListViewModel : ViewModel(), IMovieList.ViewModel {
 
-    private val repository by lazy { MovieListRepository() }
-    private val movieListLDObserver by lazy { MutableLiveData<Resource<MovieResponseDtos?>>() }
+   // private val movieListLDObserver by lazy { MutableLiveData<Resource<MovieResponseDtos?>>() }
+   private var userPagedList: LiveData<PagedList<MovieListItemDto>>
 
-    override fun fetchMovieList(page : Int) {
-        viewModelScope.launch {
-            movieListLDObserver.value = Resource.loading()
-            movieListLDObserver.value = Resource.success(repository.getMovieList(page).body())
-        }
+    init {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(20)
+            .build()
+
+        userPagedList = LivePagedListBuilder(DataSourceFactory(),config).build()
     }
 
-    override fun getMovieListObserver(): MutableLiveData<Resource<MovieResponseDtos?>> {
-        return movieListLDObserver
+    private fun initializedPagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, MovieListItemDto> {
+
+        val dataSourceFactory = object : DataSource.Factory<Int, MovieListItemDto>() {
+            override fun create(): DataSource<Int, MovieListItemDto> {
+                return MovieItemDataSource()
+            }
+        }
+        return LivePagedListBuilder<Int, MovieListItemDto>(dataSourceFactory, config)
+    }
+
+    override fun getMovieListObserver(): LiveData<PagedList<MovieListItemDto>> {
+        return userPagedList
     }
 }
