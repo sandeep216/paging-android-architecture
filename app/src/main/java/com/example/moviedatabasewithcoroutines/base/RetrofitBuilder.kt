@@ -1,18 +1,27 @@
 package com.example.moviedatabasewithcoroutines.base
 
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 /**
  * Created by Sandeep on 23/05/20.
  */
-object RetrofitBuilder {
+@Module
+@InstallIn(ApplicationComponent::class)
+class RetrofitBuilder {
 
-    fun getRetrofit(): Retrofit {
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(HttpLoggingInterceptor())
         httpClient.addInterceptor(AuthInterceptor())

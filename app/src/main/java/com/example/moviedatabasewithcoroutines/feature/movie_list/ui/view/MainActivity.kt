@@ -13,8 +13,10 @@ import com.example.moviedatabasewithcoroutines.base.Status
 import com.example.moviedatabasewithcoroutines.feature.movie_list.data.dtos.MovieResponseDtos
 import com.example.moviedatabasewithcoroutines.feature.movie_list.ui.view.adapter.MovieAdapter
 import com.example.moviedatabasewithcoroutines.feature.movie_list.ui.view_model.MovieListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mViewModel by lazy { ViewModelProviders.of(this)[MovieListViewModel::class.java] }
