@@ -43,7 +43,7 @@ class MovieAdapter : PagedListAdapter<MovieListItemDto, MovieAdapter.MovieItemVi
         holder.bind(movieItem!!)
     }
 
-    inner class MovieItemViewHolder(var binding : LayoutMovieItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MovieItemViewHolder(private val binding : LayoutMovieItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movieItem : MovieListItemDto) {
             binding.movieItem = movieItem
             binding.ivMovieItem.load(itemView.context, movieItem.getImageUrl())
